@@ -29,7 +29,7 @@ export default class App extends Component {
 
         //2 вариант через Fetch
         const { hits: {pageURL} } = await fetch(
-          `https://pixabay.com/api/?q=${query}=1&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
+          `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
         )
           .then(res => res.json())
           // .then(images => this.setState({ images }));
