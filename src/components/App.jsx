@@ -28,12 +28,12 @@ export default class App extends Component {
         // this.setState({ images: result });
 
         //2 вариант через Fetch
-        const { hits: {pageURL} } = await fetch(
+        const { hits } = await fetch(
           `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
         )
           .then(res => res.json())
           // .then(images => this.setState({ images }));
-          .then(images => this.setState({ images: pageURL }));
+          .then(images => this.setState({ images: hits }));
 
       } catch (error) {}
     }
@@ -59,7 +59,7 @@ export default class App extends Component {
           {this.state.images.map(image => {
             return (
               <li>
-                <img src={image.pageURL} alt="" />
+                <img src={image.hits} alt="" />
               </li>
             );
           })}
