@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import Searchbar from './Searchbar/Searchbar.js';
 // import ImageGallery from './/ImageGallery/ImageGallery.js';
-import * as ImageService from '..//service/img-service.js';
+// import * as ImageService from '..//service/img-service.js';
 
 export default class App extends Component {
   state = {
@@ -16,7 +16,8 @@ export default class App extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    const { query, images, page } = this.state;
+    const { query, page } = this.state;
+    // const { query, images, page } = this.state;
 
     // console.log('this.state.query', query);
 
@@ -28,7 +29,7 @@ export default class App extends Component {
 
         //2 вариант через Fetch
         const { hits: {pageURL} } = await fetch(
-          `https://pixabay.com/api/?q=${query}=1&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&orientation=horizontal&per_page=12`
+          `https://pixabay.com/api/?q=${query}=1&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
         )
           .then(res => res.json())
           // .then(images => this.setState({ images }));
