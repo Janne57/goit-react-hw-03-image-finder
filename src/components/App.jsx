@@ -32,9 +32,15 @@ export default class App extends Component {
           `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
         )
           .then(res => res.json())
-          // .then(images => this.setState({ images }));
           .then(images => this.setState({ images: hits }));
 
+          //так выводится
+          // await fetch(
+          //   `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
+          // )
+          //   .then(res => res.json())
+          //   .then(images => this.setState({ images }));
+           
       } catch (error) {}
     }
   }
@@ -56,13 +62,13 @@ export default class App extends Component {
         <ul className="gallery">
           {/* <ImageGalleryItem /> */}
           {/* {!this.state.query && <li>{this.props.query}</li>} */}
-          {this.state.images.map(image => {
+          {/* {this.state.images.map(image => {
             return (
               <li>
                 <img src={image.hits} alt="" />
               </li>
             );
-          })}
+          })} */}
 
           {/* <li>{this.state.query}</li> */}
         </ul>
