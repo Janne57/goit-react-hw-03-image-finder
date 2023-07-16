@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import Searchbar from './Searchbar/Searchbar.js';
 // import ImageGallery from './/ImageGallery/ImageGallery.js';
-// import * as ImageService from '..//service/img-service.js';
+import * as ImageService from '..//service/img-service.js';
 
 export default class App extends Component {
   state = {
@@ -18,29 +18,20 @@ export default class App extends Component {
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
     // const { query, images, page } = this.state;
-
     // console.log('this.state.query', query);
 
     if (prevState.query !== query && query !== '') {
       try {
         //1 вариант
-        // const { result } = await ImageService.getImage({ query, page });
-        // this.setState({ images: result });
+        const { hits } = await ImageService.getImage({ query, page });
+        this.setState({ images: hits });
 
         //2 вариант через Fetch
-        const { hits } = await fetch(
-          `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
-        )
-          .then(res => res.json())
-          .then(images => this.setState({ images: hits }));
-
-          //так выводится
-          // await fetch(
-          //   `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
-          // )
-          //   .then(res => res.json())
-          //   .then(images => this.setState({ images }));
-           
+    //     fetch(
+    //       `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
+    //     )
+    //       .then(res => res.json())
+    //       .then(images => this.setState({ images: images.hits }));           
       } catch (error) {}
     }
   }
