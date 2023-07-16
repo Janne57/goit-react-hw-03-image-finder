@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import Searchbar from './Searchbar/Searchbar.js';
-import ImageGallery from './/ImageGallery/ImageGallery.js';
+// import ImageGallery from './/ImageGallery/ImageGallery.js';
 import * as ImageService from '..//service/img-service.js';
 
 export default class App extends Component {
