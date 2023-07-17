@@ -26,7 +26,7 @@ export default class App extends Component {
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
 
-    if ((prevState.query !== query && query !== '') || prevState.page != page) {
+    if ((prevState.query !== query && query !== '') || prevState.page !== page) {
       try {
         this.setState({ loading: true });
         //1 вариант
