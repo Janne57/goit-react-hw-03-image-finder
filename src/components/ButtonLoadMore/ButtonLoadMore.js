@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import css from '../ButtonLoadMore/ButtonLoadMore.module.css';
 
 
