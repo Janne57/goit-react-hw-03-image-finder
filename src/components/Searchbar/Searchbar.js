@@ -6,9 +6,11 @@ export default class Searchbar extends Component {
     query: '',
   };
 
+
   handleChange = evt => {
     this.setState({ query: evt.currentTarget.value });
   };
+
 
   handleSubmit = evt => {
     evt.preventDefault();
@@ -22,6 +24,7 @@ export default class Searchbar extends Component {
     this.setState({ query: '' });
   };
 
+  
   render() {
     return (
       <header className={css.searchbar}>

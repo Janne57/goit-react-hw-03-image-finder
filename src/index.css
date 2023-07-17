@@ -47,3 +47,6 @@ ul,
 ol {
   list-style: none;
 }
+p {
+  color: grey;
+}
