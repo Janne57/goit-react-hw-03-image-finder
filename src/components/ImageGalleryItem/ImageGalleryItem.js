@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import css from '../ImageGalleryItem/ImageGalleryItem.module.css';
 
 export default function ImageGalleryItem({ dataArr, onImageClick }) {
