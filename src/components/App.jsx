@@ -8,7 +8,7 @@ import css from './/App.module.css';
 // import * as ImageService from '..//service/img-service.js';
 // import * as basicLightbox from 'basiclightbox';
 import { ColorRing } from 'react-loader-spinner';
-import Notiflix from 'notiflix';
+// import Notiflix from 'notiflix';
 
 export default class App extends Component {
   state = {
@@ -19,7 +19,6 @@ export default class App extends Component {
     isBtnLoadVisible: false,
     isShowModal: false,
     dataForModal: null,
-    // largeImageURL: '',
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -42,21 +41,22 @@ export default class App extends Component {
         await fetch(
           `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
         )
-          .then(response => { 
-            // if (response.hits.length !== 0 ) { return response.json()}
-            if (response) { 
-              return response.json()}
-               Notiflix.Notify.failure('There are not any images....');
-          } 
-           )
-          .then(images =>           
+          .then(response => {
+            return response.json();
+          })
+
+          // if (response.hits)  {return response.json();} 
+          //    Notiflix.Notify.failure('There are not any images....');
+          //    return;
+
+          .then(images =>
             this.setState(prevState => ({
               images: [
                 ...prevState.images,
                 ...this.getNormalizedImages(images.hits),
               ],
               isBtnLoadVisible: page < Math.ceil(images.total / 12),
-            })),
+            }))
           );
       } catch (error) {
       } finally {
@@ -77,18 +77,15 @@ export default class App extends Component {
 
   handleLoadMoreClick = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
-    // console.log('page', this.state.page);
   };
 
   handleFormSubmit = query => {
-    // console.log('query', query);
     this.setState({ query, images: [], page: 1 });
   };
 
   handleImageClick = ({ largeImageURL, tags }) => {
     this.setState({
       isShowModal: true,
-      // largeImageURL: this.state.images.largeImageURL,
       dataForModal: { largeImageURL, tags },
     });
   };
@@ -125,10 +122,6 @@ export default class App extends Component {
           </ImageGallery>
         )}
 
-        {/* {this.state.images ===[] && (
-          alert("SORRY")
-        )} */}
-
         {this.state.loading && (
           <div className={css.spiner}>
             <p>LOADING...</p>
@@ -150,7 +143,6 @@ export default class App extends Component {
         {this.state.isShowModal && (
           <Modal
             dataForModal={this.state.dataForModal}
-            // urlLarge={this.state.largeImageURL}
             onClose={this.toggleModal}
           />
         )}
@@ -158,6 +150,21 @@ export default class App extends Component {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // toggleModal = () => {
 //   this.setState(state => ({isShowModal: !state.isShowModal}))
