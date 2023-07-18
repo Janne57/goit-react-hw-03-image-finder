@@ -8,8 +8,7 @@ import css from './/App.module.css';
 // import * as ImageService from '..//service/img-service.js';
 // import * as basicLightbox from 'basiclightbox';
 import { ColorRing } from 'react-loader-spinner';
-
-
+import Notiflix from 'notiflix';
 
 export default class App extends Component {
   state = {
@@ -20,13 +19,16 @@ export default class App extends Component {
     isBtnLoadVisible: false,
     isShowModal: false,
     dataForModal: null,
-    largeImageURL: '',
+    // largeImageURL: '',
   };
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
 
-    if ((prevState.query !== query && query !== '') || prevState.page !== page) {
+    if (
+      (prevState.query !== query && query !== '') ||
+      prevState.page !== page
+    ) {
       try {
         this.setState({ loading: true });
         //1 вариант
@@ -40,16 +42,21 @@ export default class App extends Component {
         await fetch(
           `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
         )
-          .then(res => res.json())
-          .then(images =>
+          .then(response => { 
+            // if (response.hits.length !== 0 ) { return response.json()}
+            if (response) { 
+              return response.json()}
+               Notiflix.Notify.failure('There are not any images....');
+          } 
+           )
+          .then(images =>           
             this.setState(prevState => ({
               images: [
                 ...prevState.images,
                 ...this.getNormalizedImages(images.hits),
               ],
               isBtnLoadVisible: page < Math.ceil(images.total / 12),
-              
-            }))
+            })),
           );
       } catch (error) {
       } finally {
@@ -60,31 +67,31 @@ export default class App extends Component {
 
   //получаем массив с необходимыми свойствами
   getNormalizedImages(array) {
-    return array.map(({ id, webformatURL, largeImageURL }) => ({
+    return array.map(({ id, webformatURL, largeImageURL, tags }) => ({
       id,
       webformatURL,
       largeImageURL,
+      tags,
     }));
   }
 
   handleLoadMoreClick = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
-    console.log('page', this.state.page);
+    // console.log('page', this.state.page);
   };
 
   handleFormSubmit = query => {
-    console.log('query', query);
+    // console.log('query', query);
     this.setState({ query, images: [], page: 1 });
   };
 
-  handleImageClick = e => {
+  handleImageClick = ({ largeImageURL, tags }) => {
     this.setState({
       isShowModal: true,
       // largeImageURL: this.state.images.largeImageURL,
-      dataForModal: { webformatURL: e.target.src,},
+      dataForModal: { largeImageURL, tags },
     });
   };
-
 
   toggleModal = () => {
     // this.setState(({ isShowModal }) => ({ isShowModal: !isShowModal }));
@@ -92,7 +99,6 @@ export default class App extends Component {
   };
 
   render() {
-
     return (
       <div
         style={{
@@ -118,9 +124,14 @@ export default class App extends Component {
             />
           </ImageGallery>
         )}
-        {this.state.loading &&
-          ((<p>LOADING...</p>,
+
+        {/* {this.state.images ===[] && (
+          alert("SORRY")
+        )} */}
+
+        {this.state.loading && (
           <div className={css.spiner}>
+            <p>LOADING...</p>
             <ColorRing
               visible={true}
               height="80"
@@ -130,16 +141,16 @@ export default class App extends Component {
               wrapperClass="blocks-wrapper"
               colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
             />
-            </div>
-          ))}
-        
+          </div>
+        )}
+
         {this.state.isBtnLoadVisible && !this.state.loading && (
           <ButtonLoadMore onLoadMoreClick={this.handleLoadMoreClick} />
         )}
         {this.state.isShowModal && (
           <Modal
             dataForModal={this.state.dataForModal}
-            urlLarge={this.state.largeImageURL}
+            // urlLarge={this.state.largeImageURL}
             onClose={this.toggleModal}
           />
         )}
@@ -148,29 +159,10 @@ export default class App extends Component {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// toggleModal = () => {
+//   this.setState(state => ({isShowModal: !state.isShowModal}))
+// }
 
 // toggleModal = () => {
-  //   this.setState(state => ({isShowModal: !state.isShowModal}))
-  // }
-
-  // toggleModal = () => {
-  //   this.setState(({ isShowModal }) => ({ isShowModal: !isShowModal }));
-  // };
+//   this.setState(({ isShowModal }) => ({ isShowModal: !isShowModal }));
+// };

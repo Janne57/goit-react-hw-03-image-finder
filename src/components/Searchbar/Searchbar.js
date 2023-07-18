@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import css from '../Searchbar/Searchbar.module.css'
+import Notiflix from 'notiflix';
 
 export default class Searchbar extends Component {
   state = {
@@ -16,7 +17,7 @@ export default class Searchbar extends Component {
     evt.preventDefault();
 
     if (this.state.query.trim() === '') {
-      alert('Please, enter correct query');
+      Notiflix.Notify.failure ('Please, enter correct query');
       return;
     }
 

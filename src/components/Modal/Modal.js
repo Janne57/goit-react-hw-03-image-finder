@@ -30,7 +30,7 @@ handleBackdropClick = evt => {
     return createPortal(
       <div className={css.modal__backdrop} onClick={this.handleBackdropClick}>
         <div className={css.modal__content}>
-          <img src={this.props.dataForModal.webformatURL} alt="" className={css.modal__img} />
+          <img src={this.props.dataForModal.largeImageURL} alt={`${this.props.dataForModal.tags}`} className={css.modal__img} />
           {/* для largeImageURL */}
           {/* <img src={this.props.largeImageURL} alt="" className={css.modal__img} /> */}
         </div>
