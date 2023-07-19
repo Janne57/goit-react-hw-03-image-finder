@@ -8,7 +8,7 @@ import css from './/App.module.css';
 // import * as ImageService from '..//service/img-service.js';
 // import * as basicLightbox from 'basiclightbox';
 import { ColorRing } from 'react-loader-spinner';
-// import Notiflix from 'notiflix';
+import Notiflix from 'notiflix';
 
 export default class App extends Component {
   state = {
@@ -38,31 +38,34 @@ export default class App extends Component {
         // this.setState({ images });
 
         //2 вариант через Fetch
-        await fetch(
-          `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
-        )
-          .then(response => {
-            return response.json();
-          })
+      await fetch(
+        `https://pixabay.com/api/?q=${query}&key=36926934-069e003b546c638e37e68c3ce&image_type=photo&page=${page}&orientation=horizontal&per_page=12`
+      )
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          if (!response.hits.length) {
+            Notiflix.Notify.failure('There are not any images....');
+            this.setState({ isBtnLoadVisible: false });
+            return;
+          }
 
-          // if (response.hits)  {return response.json();} 
-          //    Notiflix.Notify.failure('There are not any images....');
-          //    return;
-
-          .then(images =>
-            this.setState(prevState => ({
-              images: [
-                ...prevState.images,
-                ...this.getNormalizedImages(images.hits),
-              ],
-              isBtnLoadVisible: page < Math.ceil(images.total / 12),
-            }))
-          );
-      } catch (error) {
-      } finally {
-        this.setState({ loading: false });
-      }
+          this.setState(prevState => ({
+            images: [
+              ...prevState.images,
+              ...this.getNormalizedImages(response.hits),
+            ],
+            isBtnLoadVisible: page < Math.ceil(response.total / 12),
+          }));
+        });
+    } catch (error) {
+    } finally {
+      this.setState({ loading: false });
     }
+
+    }
+
   }
 
   //получаем массив с необходимыми свойствами
